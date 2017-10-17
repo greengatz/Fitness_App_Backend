@@ -1,6 +1,11 @@
 from flask import Flask
+from flask import request
 import psycopg2
 import sys
+import json
+
+from fitness_service import FitnessService
+from fitness_repo import FitnessRepository
 
 def connectToDb():
     # connect to db
@@ -14,7 +19,27 @@ def connectToDb():
 # connect to the db
 conn = connectToDb()
 
-# start flask app
-app = Flask(__name__)
+# instantiate service and repo
+print("setting up service")
+# repo is...
+repo = FitnessRepository(conn)
+# service is...
+service = FitnessService(repo)
 
-from app import fitness_service
+# start flask app
+print("starting flask server...")
+app = Flask(__name__)
+print("setting up routes...")
+
+# routes
+@app.route('/')
+@app.route('/index')
+def baseReturn():
+    return "success"
+
+@app.route('/workouts', methods=['PUT'])
+def save_workout_route():
+    print(request.json)
+    return service.validate_and_save_workout(request.json)
+
+app.run(debug=True)

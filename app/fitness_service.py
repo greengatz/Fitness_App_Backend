@@ -1,15 +1,9 @@
-import json
-from flask import request
+class FitnessService(object):
+  def __init__(self, repo):
+    print("instantiating service")
+    self.fitness_repository = repo
 
-from app import app
-from app import fitness_repo
-
-@app.route('/')
-@app.route('/index')
-def baseReturn():
-    return "success"
-
-@app.route('/workouts', methods=['PUT'])
-def putRoute():
-    result = fitness_repo.store_workout(request.json)
+  def validate_and_save_workout(self, workout):
+    print("saving workout")
+    result = self.fitness_repository.store_workout(workout)
     return '', result
