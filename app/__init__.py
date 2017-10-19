@@ -2,7 +2,6 @@ from flask import Flask
 from flask import request
 import psycopg2
 import sys
-import json
 
 from fitness_service import FitnessService
 from fitness_repo import FitnessRepository

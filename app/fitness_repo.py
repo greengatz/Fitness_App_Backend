@@ -3,14 +3,14 @@
 
 class FitnessRepository(object):
   def __init__(self, connection):
-    print("instantiating service")
+    print("instantiating repository")
     self.connection = connection
 
   # TODO - error check with a try catch for responses
   def store_workout(self, workout):
     cursor = self.connection.cursor()
     SQL = "INSERT INTO workouts (distance, end_time, start_time) VALUES (%s, TIMESTAMP %s, TIMESTAMP %s);"
-    cursor.execute(SQL, (workout["distance"], workout["end_time"], workout["start_time"]))
+    cursor.execute(SQL, (workout.distance, workout.end_time, workout.start_time))
     self.connection.commit()
     cursor.close()
     return 202
