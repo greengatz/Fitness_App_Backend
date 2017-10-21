@@ -2,16 +2,15 @@ from flask import Flask
 from flask import request
 import psycopg2
 import sys
+import config
 
 from fitness_service import FitnessService
 from fitness_repo import FitnessRepository
 
 def connectToDb():
-    # connect to db
-    # TODO - don't actually print db credentials in log maybe?
-    conn_string = "host='localhost' dbname='Pebble_Fitness_Dev' user='postgres' password='admin'"
-    # print the connection string we will use to connect
-    print("Connecting to database\n", conn_string)
+    conn_string = "host='{}' dbname='{}' user='{}' password='{}'"\
+        .format(config.db_host, config.db_name, config.db_user, config.db_pass)
+    print("Connecting to database {} at {} as {}\n".format(config.db_name, config.db_host, db_user))
     # get a connection, if a connect cannot be made an exception will be raised here
     return psycopg2.connect(conn_string)
 
@@ -20,9 +19,7 @@ conn = connectToDb()
 
 # instantiate service and repo
 print("setting up service")
-# repo is...
 repo = FitnessRepository(conn)
-# service is...
 service = FitnessService(repo)
 
 # start flask app
